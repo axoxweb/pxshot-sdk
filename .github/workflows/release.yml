@@ -1,0 +1,38 @@
+name: Release
+
+# Publishes to npm via trusted publishing (OIDC) when a version tag is pushed.
+# Cut a release with:
+#   npm version patch && git push --follow-tags
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write # create the GitHub release for the tag
+  id-token: write # OIDC token for npm trusted publishing + provenance
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: https://registry.npmjs.org
+
+      # Trusted publishing requires npm 11.5.1+
+      - run: npm install -g npm@latest
+
+      - run: npm ci
+
+      # Staged publishing: the version goes live only after manual
+      # promotion on npmjs.com (trusted publisher allows stage only)
+      - run: npm stage publish
+
+      # GitHub release with auto-generated notes (skips if it already exists)
+      - run: gh release create "$GITHUB_REF_NAME" --generate-notes || true
+        env:
+          GH_TOKEN: ${{ github.token }}
