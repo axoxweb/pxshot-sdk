@@ -15,10 +15,10 @@
   "homepage": "https://pxshot.dev/docs",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/axoxweb/pxshot-api.git"
+    "url": "git+https://github.com/axoxweb/pxshot-sdk.git"
   },
   "bugs": {
-    "url": "https://github.com/axoxweb/pxshot-api/issues"
+    "url": "https://github.com/axoxweb/pxshot-sdk/issues"
   },
   "license": "MIT",
   "author": "Axox Web Solutions <support@pxshot.dev>",
